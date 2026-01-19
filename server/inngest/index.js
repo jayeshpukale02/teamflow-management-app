@@ -9,7 +9,7 @@ const syncUserCreation=inngest.createFunction(
   {id: 'sync-user-from-clerk'},
   {event: 'clerk/user.created'},
   async({event})=>{
-    const {data}=event
+    const {data}=event;
     await prisma.user.create({
       data:{
         id: data.id,
@@ -46,7 +46,7 @@ const syncUserUpdation=inngest.createFunction(
         id: data.id
       },
       data:{
-        email: data.email_addresses[0]?.email_addres,
+        email: data.email_addresses[0]?.email_address,
         name: data?.first_name+" "+data?.last_name,
         image: data?.image_url, 
       }
@@ -84,7 +84,7 @@ const syncWorkspaceCreation=inngest.createFunction(
 const syncWorkspaceUpdation=inngest.createFunction(
   {id: 'update-workspace-from-clerk'},
   {event: 'clerk/organization.updated'},
-  async (event) => {
+  async ({event}) => {
     const {data}=event;
     await prisma.workspace.update({
       where:{
@@ -104,7 +104,7 @@ const syncWorkspaceUpdation=inngest.createFunction(
 const syncWorkspaceDeletion=inngest.createFunction(
   {id: 'delete-workspace-with-clerk'},
   {event: 'clerk/organization.deleted'},
-  async (event) => {
+  async ({event}) => {
     const {data}=event;
     await prisma.workspace.delete({
       where: {
@@ -118,7 +118,7 @@ const syncWorkspaceDeletion=inngest.createFunction(
 const syncWorkspaceMemberCreation=inngest.createFunction(
   {id: 'sync-workspace-member-from-clerk'},
   {event: 'clerk/organizationInvitation.accepted'},
-  async (event) => {
+  async ({event}) => {
     const {data}=event;
     await prisma.workspaceMember.create({
       data: {
